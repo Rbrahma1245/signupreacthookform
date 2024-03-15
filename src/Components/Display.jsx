@@ -3,18 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { clickTableRow, deleteFormField } from "../Slice/Signup";
 import { Button } from "@mui/material";
 
-function Display() {
-  const { formList, selectedTableRow } = useSelector((state) => state.signup);
+function Display({ setValue }) {
+  const { formList } = useSelector((state) => state.signup);
 
   const dispatch = useDispatch();
 
-  function handleDeleteClick({id, e}) {
-    e.stopPropagation()
-    dispatch(deleteFormField(id))
-    console.log(id);
+  function handleDeleteClick({ id, e }) {
+    e.stopPropagation();
+    dispatch(deleteFormField(id));
   }
-
-  console.log(selectedTableRow);
 
   const columns = [
     { field: "firstName", headerName: "First Name", width: 150 },
@@ -41,7 +38,7 @@ function Display() {
             variant="outlined"
             color="error"
             type="button"
-            onClick={(e) => handleDeleteClick({id: params.row.id, e})}
+            onClick={(e) => handleDeleteClick({ id: params.row.id, e })}
           >
             <GridDeleteIcon />
           </Button>
@@ -51,19 +48,16 @@ function Display() {
   ];
 
   const handleRowClick = (params) => {
+    Object.keys(params.row).forEach((e) => {
+      setValue(e, params.row[e]);
+    });
+
     dispatch(clickTableRow(params.row));
   };
 
   return (
-    <div>
-      Display
-      <div style={{ height: 300, width: "100%" }}>
-        <DataGrid
-          rows={formList}
-          columns={columns}
-          onRowClick={handleRowClick}
-        />
-      </div>
+    <div style={{ height: 300, width: "100%", marginTop: 50 }}>
+      <DataGrid rows={formList} columns={columns} onRowClick={handleRowClick} />
     </div>
   );
 }

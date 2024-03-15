@@ -4,11 +4,15 @@ import NameField from "./NameField";
 // import GenderField from "./GenderField";
 import InputField from "./Custom/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { addFormField, resetTableRow } from "../../Slice/Signup";
+import {
+  addFormField,
+  resetTableRow,
+  updateFormField,
+} from "../../Slice/Signup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { areAllValuesEmpty, isObjectEmpty } from "../../Utils/ObjectUtils";
+import Display from "../Display";
 
 const schema = yup
   .object({
@@ -37,38 +41,30 @@ function Signup() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const { selectedTableRow } = useSelector((state) => state.signup);
+  const { formList, selectedTableRow } = useSelector((state) => state.signup);
 
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    console.log(data);
-
     console.log(selectedTableRow);
-    if (isObjectEmpty(selectedTableRow)) {
+    if (selectedTableRow.id) {
       console.log("perform some");
+      dispatch(updateFormField(data));
+      dispatch(resetTableRow());
+    } else {
+      dispatch(addFormField(data));
     }
-
-    dispatch(addFormField(data));
-
-    // if(selectedTableRow){
-    //   console.log("perform some operation" );
-    // }
-    // else{
-    //   dispatch(addFormField(data));
-    // }
-    // reset()
+    reset();
   };
 
-  console.log(selectedTableRow, "SELECT PARTICULAR ROW");
-
-  function handleReset(){
-    reset()
-    dispatch(resetTableRow())
+  function handleReset() {
+    reset();
+    dispatch(resetTableRow());
   }
 
   return (
@@ -148,6 +144,8 @@ function Signup() {
           </Button>
         </Box>
       </form>
+
+      {formList.length > 0 && <Display setValue={setValue} />}
     </div>
   );
 }
