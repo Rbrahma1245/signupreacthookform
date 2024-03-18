@@ -36,8 +36,14 @@ const schema = yup
       .matches(/^\d{10}$/, "Phone number must be 10 digits")
       .required("Phone number is required"),
     street: yup.string().required(),
-    city: yup.string().required(),
-    state: yup.string().required(),
+    city: yup
+      .string()
+      .matches(/^[A-Za-z]+$/, "City must contain only letters")
+      .required(),
+    state: yup
+      .string()
+      .matches(/^[A-Za-z]+$/, "City must contain only letters")
+      .required(),
     pinCode: yup.string().required(),
   })
   .required();
