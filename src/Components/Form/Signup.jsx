@@ -14,12 +14,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Display from "../Display";
 
+
+// NAME VALIDATION
+const nameValidationSchema = yup
+  .string()
+  .min(2, "Name must be at least 2 characters")
+  .max(50, "Name must be at most 50 characters")
+  .matches(/^[A-Za-z]*$/, "Name must contain only letters")
+  .required("Name is required");
+
 const schema = yup
   .object({
-    firstName: yup.string().required(),
-    middleName: yup.string().required(),
-    lastName: yup.string().required(),
-
+    firstName: nameValidationSchema,
+    middleName: nameValidationSchema,
+    lastName: nameValidationSchema,
     email: yup
       .string()
       .email("Invalid email address")
@@ -46,6 +54,7 @@ function Signup() {
     resolver: yupResolver(schema),
   });
 
+  console.log(errors);
   const { formList, selectedTableRow } = useSelector((state) => state.signup);
 
   const dispatch = useDispatch();

@@ -2,15 +2,36 @@ import { DataGrid, GridDeleteIcon } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { clickTableRow, deleteFormField } from "../Slice/Signup";
 import { Button } from "@mui/material";
+import Swal from "sweetalert2";
 
 function Display({ setValue }) {
   const { formList } = useSelector((state) => state.signup);
 
   const dispatch = useDispatch();
 
-  function handleDeleteClick({ id, e }) {
+  const confirmDelete = async () => {
+    return Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this data!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+  };
+
+  
+    const handleDeleteClick = async ({ id, e }) => {
+    const result = await confirmDelete();
     e.stopPropagation();
-    dispatch(deleteFormField(id));
+
+    if (result.isConfirmed) {
+      dispatch(deleteFormField(id));
+      console.log('Data deleted');
+  
+    }
+
   }
 
   const columns = [
