@@ -19,7 +19,7 @@ const nameValidationSchema = (name) =>
   yup
     .string()
     .max(50, `${name} must be at most 50 characters`)
-    .matches(/^[A-Za-z ]*$/, `${name} must contain only letters`)
+    .matches(/^[A-Za-z]*$/, `${name} must contain only letters`)
     .required(`${name} is required`);
 
 const schema = yup
