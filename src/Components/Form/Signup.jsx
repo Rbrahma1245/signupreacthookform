@@ -14,20 +14,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Display from "../Display";
 
-
 // NAME VALIDATION
-const nameValidationSchema = yup
-  .string()
-  .min(2, "Name must be at least 2 characters")
-  .max(50, "Name must be at most 50 characters")
-  .matches(/^[A-Za-z]*$/, "Name must contain only letters")
-  .required("Name is required");
+const nameValidationSchema = (name) =>
+  yup
+    .string()
+    .max(50, `${name} must be at most 50 characters`)
+    .matches(/^[A-Za-z ]*$/, `${name} must contain only letters`)
+    .required(`${name} is required`);
 
 const schema = yup
   .object({
-    firstName: nameValidationSchema,
-    middleName: nameValidationSchema,
-    lastName: nameValidationSchema,
+    firstName: nameValidationSchema("First Name"),
+    middleName: nameValidationSchema("Middle Name"),
+    lastName: nameValidationSchema("Last Name"),
     email: yup
       .string()
       .email("Invalid email address")
@@ -93,51 +92,73 @@ function Signup() {
         </Box>
 
         <Box {...commonBoxProps}>
-          <InputField
-            label="Email."
-            type="email"
-            name="email"
-            error={!!errors.email}
-            register={register}
-          />
-          <InputField
-            label="Phone No."
-            type="number"
-            name="phoneNo"
-            error={!!errors.phoneNo}
-            register={register}
-          />
-          <InputField
-            label="Street"
-            type="text"
-            name="street"
-            error={!!errors.street}
-            register={register}
-          />
+          <div>
+            <InputField
+              label="Email."
+              type="email"
+              name="email"
+              error={!!errors.email}
+              register={register}
+            />
+            <div className="error">{errors.email?.message}</div>
+          </div>
+
+          <div>
+            <InputField
+              label="Phone No."
+              type="number"
+              name="phoneNo"
+              error={!!errors.phoneNo}
+              register={register}
+            />
+            <div className="error">{errors.phoneNo?.message}</div>
+          </div>
+
+          <div>
+            <InputField
+              label="Street"
+              type="text"
+              name="street"
+              error={!!errors.street}
+              register={register}
+            />
+            <div className="error">{errors.street?.message}</div>
+          </div>
         </Box>
 
         <Box {...commonBoxProps}>
-          <InputField
-            label="City"
-            type="text"
-            name="city"
-            error={!!errors.city}
-            register={register}
-          />
-          <InputField
-            label="State"
-            type="text"
-            name="state"
-            error={!!errors.state}
-            register={register}
-          />
-          <InputField
-            label="Postal/ ZIP."
-            type="number"
-            name="pinCode"
-            error={!!errors.pinCode}
-            register={register}
-          />
+          <div>
+            <InputField
+              label="City"
+              type="text"
+              name="city"
+              error={!!errors.city}
+              register={register}
+            />
+            <div className="error">{errors.city?.message}</div>
+          </div>
+
+          <div>
+            <InputField
+              label="State"
+              type="text"
+              name="state"
+              error={!!errors.state}
+              register={register}
+            />
+            <div className="error">{errors.state?.message}</div>
+          </div>
+
+          <div>
+            <InputField
+              label="Postal/ ZIP."
+              type="number"
+              name="pinCode"
+              error={!!errors.pinCode}
+              register={register}
+            />
+            <div className="error">{errors.pinCode?.message}</div>
+          </div>
         </Box>
         <Box {...commonBoxProps} marginTop={5}>
           <Button type="submit" variant="contained">

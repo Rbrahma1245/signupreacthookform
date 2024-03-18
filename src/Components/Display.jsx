@@ -11,28 +11,25 @@ function Display({ setValue }) {
 
   const confirmDelete = async () => {
     return Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this data!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "You will not be able to recover this data!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     });
   };
 
-  
-    const handleDeleteClick = async ({ id, e }) => {
+  const handleDeleteClick = async ({ id, e }) => {
     const result = await confirmDelete();
     e.stopPropagation();
 
     if (result.isConfirmed) {
       dispatch(deleteFormField(id));
-      console.log('Data deleted');
-  
+      console.log("Data deleted");
     }
-
-  }
+  };
 
   const columns = [
     { field: "firstName", headerName: "First Name", width: 150 },
